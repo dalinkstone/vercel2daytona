@@ -1,0 +1,81 @@
+packages/py-sdk/src/vercel2daytona/cli.py
+  s_db2946d765cbdd::t_a4b7a38e444fa3 2,81-86,94-95
+  s_db2946d765cbdd::t_f9b2c731137f5b 1,3-6,8-80,87-93,96-98,100
+  s_db2946d765cbdd::t_9cf93d4a81cecb 7,99
+packages/py-sdk/src/vercel2daytona/sandbox/_adapter.py
+  s_db2946d765cbdd::t_cb1a3066e1945f 113,120,163-165,167,171,219,224-225,227-230,232-236
+  s_db2946d765cbdd::t_9cf93d4a81cecb 99,101,103
+  s_db2946d765cbdd::t_785bade6cb8458 1-98,100,102,104-112,114-119,121-162,166,168-170,172-176,178,184-218,220-223,226,231,237-270
+  s_db2946d765cbdd::t_c083717156734d 177,179-183
+packages/py-sdk/src/vercel2daytona/sandbox/__init__.py
+  s_db2946d765cbdd::t_785bade6cb8458 1-10
+packages/py-sdk/src/vercel2daytona/__init__.py
+  s_db2946d765cbdd::t_785bade6cb8458 1-5
+packages/py-sdk/tests/migration_live.py
+  s_db2946d765cbdd::t_6c18db4c198fc9 1-134
+README.md
+  s_db2946d765cbdd::t_7ad3db0c661d2d 1,5-6,8-11,13,15,17,19,26-29,31,34-35,38-40,43-45,47,49-51,53,55,57-60,62
+package.json
+  s_db2946d765cbdd::t_7ad3db0c661d2d 13
+.github/workflows/ci.yml
+  s_db2946d765cbdd::t_7ad3db0c661d2d 29-47
+packages/py-sdk/tests/test_adapter.py
+  s_db2946d765cbdd::t_979785a537c6f9 147-170
+  s_db2946d765cbdd::t_9cf93d4a81cecb 1-136,178-198
+  s_db2946d765cbdd::t_cb1a3066e1945f 137-146,171-177
+sources.json
+  s_db2946d765cbdd::t_7ad3db0c661d2d 15-19,29-31,33
+COMPATIBILITY.md
+  s_db2946d765cbdd::t_7ad3db0c661d2d 1-64
+packages/py-sdk/pyproject.toml
+  s_db2946d765cbdd::t_785bade6cb8458 1-26
+packages/py-sdk/src/vercel2daytona/analyze.py
+  s_db2946d765cbdd::t_49ad69a7a5e0ef 85-86
+  s_db2946d765cbdd::t_9cf93d4a81cecb 15,106,232-251
+  s_db2946d765cbdd::t_f9b2c731137f5b 1-14,16-84,87-105,107-209,212-225,231,252-261
+  s_db2946d765cbdd::t_a4b7a38e444fa3 210-211,226-230
+examples/job.py
+  s_db2946d765cbdd::t_7ad3db0c661d2d 1-17
+docs/typescript.md
+  s_db2946d765cbdd::t_7ad3db0c661d2d 1-70,72-74
+  s_db2946d765cbdd::t_d3302974963dc6 71
+VALIDATION.md
+  s_db2946d765cbdd::t_a4b7a38e444fa3 38
+  s_db2946d765cbdd::t_7ad3db0c661d2d 1,3,5-7,9-11,13-19,28-31,33,35,37,39,42-50,53-56
+  s_db2946d765cbdd::t_c083717156734d 8
+packages/py-sdk/README.md
+  s_db2946d765cbdd::t_a4b7a38e444fa3 8,11-12
+  s_db2946d765cbdd::t_9cf93d4a81cecb 1-7,9-10,13-85
+packages/py-sdk/tests/test_cli.py
+  s_db2946d765cbdd::t_49ad69a7a5e0ef 1-20,29-46,48-55,57-90,94-136
+  s_db2946d765cbdd::t_6c18db4c198fc9 21-28
+  s_db2946d765cbdd::t_a4b7a38e444fa3 47,56,91-93
+packages/py-sdk/src/vercel2daytona/sandbox/sync.py
+  s_db2946d765cbdd::t_785bade6cb8458 1-93
+packages/py-sdk/tests/fixtures/async_app.py
+  s_db2946d765cbdd::t_6c18db4c198fc9 1-47
+packages/py-sdk/tests/fixtures/sync_app.py
+  s_db2946d765cbdd::t_6c18db4c198fc9 1-46
+packages/py-sdk/src/vercel2daytona/__main__.py
+  s_db2946d765cbdd::t_f9b2c731137f5b 1-3
+.gitignore
+  s_db2946d765cbdd::t_49ad69a7a5e0ef 7-10
+verification/python-migration-2026-10-27.json
+  s_db2946d765cbdd::t_14f5974d25d792 1-83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e5536ec60762163c734a5f15db3b274afb030734",
+  "prompts": {},
+  "sessions": {
+    "s_db2946d765cbdd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17a2f-271c-7511-bfcd-25a401506a6e",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Dalin Stone <dalinkstone@gmail.com>"
+    }
+  }
+}
