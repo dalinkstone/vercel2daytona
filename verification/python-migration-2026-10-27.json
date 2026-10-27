@@ -1,0 +1,83 @@
+{
+  "checkedAt": "2026-10-27T03:08:26.593297+00:00",
+  "versions": {
+    "vercel": "0.12.1",
+    "vercel-sandbox": "0.10.0",
+    "daytona": "0.226.1",
+    "vercel2daytona": "0.1.0"
+  },
+  "target": {
+    "image": "python:3.12-bookworm",
+    "workdir": "/root"
+  },
+  "automaticChanges": [
+    "Rewrote sandbox imports; application logic unchanged"
+  ],
+  "configuration": [
+    "Daytona credentials, image and workdir supplied through environment variables"
+  ],
+  "scenarios": {
+    "async": {
+      "resultsMatch": true,
+      "cleanupConfirmed": {
+        "vercel": true,
+        "daytona": true
+      },
+      "sourceSha256": "075686ae1b432f487c2365c9e9ec7b28040b9e27df5331d1889bbd8feaab6841",
+      "migratedSha256": "e38a85223b0ca022711db7b59f70fbeadc78e27d6b6891fb36735f388edc56ef",
+      "result": {
+        "report": {
+          "sum": 14,
+          "label": "migration"
+        },
+        "sha256": "0d872bf08b62a38a70dc2b702ec8a615ae15675e82bf324ddb44017b076c3043",
+        "stdout": "{\"sum\": 14, \"label\": \"migration\"}\n",
+        "stderr": "report-built\n",
+        "mode": "640",
+        "binary": "00017f80ff",
+        "argv": [
+          [
+            "two words",
+            "apostrophe'",
+            "$(printf injected)",
+            "*",
+            ""
+          ],
+          ""
+        ],
+        "failureExitCode": 7
+      }
+    },
+    "sync": {
+      "resultsMatch": true,
+      "cleanupConfirmed": {
+        "vercel": true,
+        "daytona": true
+      },
+      "sourceSha256": "c4f593c7311ca387b7b496f4afbee3a896f5e2ea9b5fd82379f17be43af8f6d3",
+      "migratedSha256": "66acf0f03686b011406f3aa594d7b39350646fed71d47834bfc6e1cc477564c7",
+      "result": {
+        "report": {
+          "sum": 14,
+          "label": "migration"
+        },
+        "sha256": "0d872bf08b62a38a70dc2b702ec8a615ae15675e82bf324ddb44017b076c3043",
+        "stdout": "{\"sum\": 14, \"label\": \"migration\"}\n",
+        "stderr": "report-built\n",
+        "mode": "640",
+        "binary": "00017f80ff",
+        "argv": [
+          [
+            "two words",
+            "apostrophe'",
+            "$(printf injected)",
+            "*",
+            ""
+          ],
+          ""
+        ],
+        "failureExitCode": 7
+      }
+    }
+  }
+}

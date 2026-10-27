@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vercel2daytona"
+version = "0.1.0"
+description = "Vercel Sandbox migration tools and a disposable Python adapter for Daytona"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["daytona==0.226.1"]
+
+[project.optional-dependencies]
+test = ["vercel==0.12.1", "vercel-sandbox==0.10.0", "build==1.3.0", "hatchling==1.27.0"]
+
+[project.scripts]
+vercel2daytona-py = "vercel2daytona.cli:main"
+
+[project.urls]
+Repository = "https://github.com/dalinkstone/vercel2daytona"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vercel2daytona"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "README.md", "pyproject.toml"]

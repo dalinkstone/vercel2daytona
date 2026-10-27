@@ -12,6 +12,11 @@
     "tarball": "https://registry.npmjs.org/@daytona/sdk/-/sdk-0.226.1.tgz",
     "integrity": "sha512-5L0Ta4aWI+WRbC2ZyuJVtdOB+RXrteaj1SQY8H2cr4OgdZ1gSAh4qad8b8tkUtT1iCTAyBavvEvvRmKg5OWyKA=="
   },
+  "python": {
+    "checkedAt": "2026-10-27",
+    "source": { "package": "vercel", "version": "0.12.1", "sandboxPackage": "vercel-sandbox", "sandboxVersion": "0.10.0" },
+    "target": { "package": "daytona", "version": "0.226.1" }
+  },
   "documentation": [
     "https://vercel.com/docs/sandbox/sdk-reference",
     "https://vercel.com/docs/sandbox/concepts/persistent-sandboxes",
@@ -21,7 +26,9 @@
     "https://www.daytona.io/docs/en/typescript-sdk/sandbox/",
     "https://www.daytona.io/docs/en/typescript-sdk/process/",
     "https://www.daytona.io/docs/en/typescript-sdk/file-system/",
-    "https://www.daytona.io/docs/en/preview/"
+    "https://www.daytona.io/docs/en/preview/",
+    "https://vercel.com/docs/sandbox/python-sdk-reference",
+    "https://www.daytona.io/docs/en/python-sdk/"
   ],
-  "liveCloudValidation": "passed 2026-10-27 UTC; see verification/live-2026-10-27.json and VALIDATION.md"
+  "liveCloudValidation": "TypeScript and Python async/sync passed 2026-10-27 UTC; see verification/ and VALIDATION.md"
 }

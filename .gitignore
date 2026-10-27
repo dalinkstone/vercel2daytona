@@ -4,3 +4,7 @@ dist/
 .env*
 !.env.example
 *.vercel2daytona.bak
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
