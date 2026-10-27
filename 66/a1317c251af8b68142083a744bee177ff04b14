@@ -1,0 +1,61 @@
+.env.example
+  s_db2946d765cbdd::t_17496845b800f4 1-12
+.github/workflows/ci.yml
+  s_db2946d765cbdd::t_9be7338bf8358f 1-28
+.gitignore
+  s_db2946d765cbdd::t_8701e761894a9e 1-6
+COMPATIBILITY.md
+  s_db2946d765cbdd::t_8d3077a0f3276e 1-62
+README.md
+  s_db2946d765cbdd::t_3c92dfb14b5fb0 1-169
+VALIDATION.md
+  s_db2946d765cbdd::t_2238a368b91741 1-66
+examples/job.mjs
+  s_db2946d765cbdd::t_dc9f7efec2b2df 1-29
+package-lock.json
+  s_db2946d765cbdd::t_15579135472077 1-2200
+package.json
+  s_db2946d765cbdd::t_b2043f61f404d2 1-24
+sources.json
+  s_db2946d765cbdd::t_c451d1bb29a3f1 1-27
+src/adapter.ts
+  s_db2946d765cbdd::t_794a29eb3dc366 1-325
+src/analyze.ts
+  s_db2946d765cbdd::t_921463bf99a8ad 1-217
+src/cli.ts
+  s_db2946d765cbdd::t_f0c49e31bc8e2f 1-142
+src/contracts.ts
+  s_db2946d765cbdd::t_7fd873c11732a2 1-46
+tests/adapter.test.mjs
+  s_db2946d765cbdd::t_ca89f4743c1dbd 1-181
+tests/analyze.test.mjs
+  s_db2946d765cbdd::t_3447c5ba9a1159 1-84
+tests/cli.test.mjs
+  s_db2946d765cbdd::t_66157adbd90109 1-122
+tests/no-network.mjs
+  s_db2946d765cbdd::t_a1ec6c6a5fa3f5 1-10
+tests/package.mjs
+  s_db2946d765cbdd::t_fffb38a7855b36 1-34
+tests/types.mts
+  s_db2946d765cbdd::t_eb78cbfd28a998 1-20
+tsconfig.json
+  s_db2946d765cbdd::t_87fa0d1b825f77 1-15
+verification/live-2026-10-27.json
+  s_db2946d765cbdd::t_a201759a37a4fe 1-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "66a1317c251af8b68142083a744bee177ff04b14",
+  "prompts": {},
+  "sessions": {
+    "s_db2946d765cbdd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17a2f-271c-7511-bfcd-25a401506a6e",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Dalin Stone <dalinkstone@gmail.com>"
+    }
+  }
+}
