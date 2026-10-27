@@ -1,0 +1,6 @@
+node_modules/
+dist/
+*.tgz
+.env*
+!.env.example
+*.vercel2daytona.bak

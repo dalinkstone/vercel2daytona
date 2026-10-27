@@ -1,0 +1,15 @@
+{
+  "passed": [
+    "create with native TTL",
+    "binary files, cwd, missing files and readable stream",
+    "argv quoting, closed stdin, env, file mode, separate streams and nonzero exit",
+    "detached server, sandbox/command reconnect and public HTTP preview",
+    "extend existing deadline",
+    "explicit deletion confirmed",
+    "native expiry without adapter cleanup timer"
+  ],
+  "image": "node:22-bookworm",
+  "workdir": "/home/node",
+  "user": "node",
+  "checkedAt": "2026-10-27T02:24:57.006Z"
+}

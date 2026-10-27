@@ -1,0 +1,24 @@
+{
+  "name": "vercel2daytona",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Vercel Sandbox migration checks and a bounded adapter for stable Daytona",
+  "repository": { "type": "git", "url": "https://github.com/dalinkstone/vercel2daytona.git" },
+  "homepage": "https://github.com/dalinkstone/vercel2daytona#readme",
+  "bugs": { "url": "https://github.com/dalinkstone/vercel2daytona/issues" },
+  "type": "module",
+  "engines": { "node": ">=22.4.0" },
+  "exports": { ".": { "types": "./dist/adapter.d.ts", "import": "./dist/adapter.js" } },
+  "bin": { "vercel2daytona": "./dist/cli.js" },
+  "files": ["dist", "README.md", "COMPATIBILITY.md", "VALIDATION.md", "sources.json", "verification", "examples", ".env.example"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test:types": "tsc --noEmit --strict --skipLibCheck --target ES2022 --module NodeNext --lib ES2023,DOM,ESNext.Disposable tests/types.mts",
+    "test": "node --import ./tests/no-network.mjs --test tests/*.test.mjs",
+    "test:package": "node tests/package.mjs",
+    "test:live": "node tests/live.mjs"
+  },
+  "dependencies": { "@daytona/sdk": "0.226.1", "typescript": "5.9.3" },
+  "devDependencies": { "@types/node": "22.15.12" }
+}

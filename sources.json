@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-26",
+  "source": {
+    "package": "@vercel/sandbox",
+    "version": "3.9.0",
+    "tarball": "https://registry.npmjs.org/@vercel/sandbox/-/sandbox-3.9.0.tgz",
+    "integrity": "sha512-l02jAULYqPdfKCnGr6Eyd58OfTXNmL1ffvNOwwsAtgiN+PuI6zhySpvtm0hnMoWQ3fIbhnSG7SRqoUuwx6XvDg=="
+  },
+  "target": {
+    "package": "@daytona/sdk",
+    "version": "0.226.1",
+    "tarball": "https://registry.npmjs.org/@daytona/sdk/-/sdk-0.226.1.tgz",
+    "integrity": "sha512-5L0Ta4aWI+WRbC2ZyuJVtdOB+RXrteaj1SQY8H2cr4OgdZ1gSAh4qad8b8tkUtT1iCTAyBavvEvvRmKg5OWyKA=="
+  },
+  "documentation": [
+    "https://vercel.com/docs/sandbox/sdk-reference",
+    "https://vercel.com/docs/sandbox/concepts/persistent-sandboxes",
+    "https://vercel.com/docs/sandbox/concepts/firewall",
+    "https://www.daytona.io/docs/",
+    "https://www.daytona.io/docs/en/typescript-sdk/daytona/",
+    "https://www.daytona.io/docs/en/typescript-sdk/sandbox/",
+    "https://www.daytona.io/docs/en/typescript-sdk/process/",
+    "https://www.daytona.io/docs/en/typescript-sdk/file-system/",
+    "https://www.daytona.io/docs/en/preview/"
+  ],
+  "liveCloudValidation": "passed 2026-10-27 UTC; see verification/live-2026-10-27.json and VALIDATION.md"
+}
