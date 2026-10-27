@@ -2,9 +2,12 @@ import ast
 import contextlib
 import io
 import json
+import re
 import tempfile
+import textwrap
 import unittest
 from pathlib import Path
+from urllib.parse import urlparse
 
 from vercel2daytona.analyze import CREATE, RUN, analyze
 from vercel2daytona.cli import apply, main
@@ -70,6 +73,36 @@ class AnalyzeTests(unittest.TestCase):
         from vercel import sandbox
         self.assertTrue(CREATE <= set(inspect.signature(sandbox.create_sandbox).parameters))
         self.assertTrue(RUN <= set(inspect.signature(sandbox.Sandbox.run_process).parameters))
+
+    def test_findings_link_to_recipes_and_preserve_behavior_choices(self):
+        guide = Path(__file__).resolve().parents[3] / 'skills/vercel2daytona/references/migration.md'
+        headings = {h.lower().replace(' ', '-') for h in re.findall(r'^## (.+)$', guide.read_text(), re.M)}
+        findings = analyze(PREFIX + "box = await sandbox.create_sandbox()\nawait box.run_process('python', env={'MODE':'report'})\nbox.snapshot()\n")['diagnostics']
+        for finding in findings:
+            url = urlparse(finding['helpUrl'])
+            self.assertEqual(url.hostname, 'github.com')
+            self.assertIn(url.fragment, headings)
+        self.assertTrue(any('every command' in d['message'] for d in findings))
+        self.assertTrue(any('retained state' in d['message'] for d in findings))
+        self.assertTrue(any('buffered output' in d['message'] for d in findings))
+
+    def test_documented_python_programs_and_replacements_pass_lint(self):
+        references = Path(__file__).resolve().parents[3] / 'skills/vercel2daytona/references'
+        checked = 0
+        for name in ['python', 'migration']:
+            for language, body in re.findall(r'```(python|diff)\n([\s\S]*?)```', (references / f'{name}.md').read_text()):
+                if language == 'diff':
+                    if not re.search(r'from vercel|await sandbox|await box.run_process', body):
+                        continue
+                    body = '\n'.join(line[1:] if line.startswith('+') else line for line in body.splitlines() if not line.startswith('-'))
+                    if not body.startswith('from '):
+                        if not body.startswith('box ='):
+                            body = 'box = await sandbox.create_sandbox(persistent=False)\n' + body
+                        body = PREFIX + 'async def main():\n' + textwrap.indent(body, '    ')
+                compile(body, f'{name}.md', 'exec')
+                self.assertFalse(errors(body), body)
+                checked += 1
+        self.assertGreaterEqual(checked, 7)
 
 
 class CliTests(unittest.TestCase):

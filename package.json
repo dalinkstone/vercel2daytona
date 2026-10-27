@@ -10,7 +10,7 @@
   "engines": { "node": ">=22.4.0" },
   "exports": { ".": { "types": "./dist/adapter.d.ts", "import": "./dist/adapter.js" } },
   "bin": { "vercel2daytona": "./dist/cli.js" },
-  "files": ["dist", "README.md", "COMPATIBILITY.md", "VALIDATION.md", "docs", "sources.json", "verification", "examples", ".env.example"],
+  "files": ["dist", "README.md", "COMPATIBILITY.md", "VALIDATION.md", "docs", "skills", "sources.json", "verification", "examples/*.mjs", "examples/*.py", ".env.example"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit",

@@ -120,3 +120,16 @@ test('moves an existing dev-only adapter dependency into runtime dependencies', 
   assert.equal(manifest.devDependencies.vercel2daytona, undefined);
   assert.equal(manifest.devDependencies.typescript, '5.9.3');
 });
+
+test('human output shows guidance and lists applied files without dumping their contents', async () => {
+  const root = await project();
+  const preview = invoke('migrate', root);
+  assert.equal(preview.status, 0, preview.stderr);
+  assert.match(preview.stdout, /Migration examples: https:\/\/github.com\//);
+  assert.match(preview.stdout, /Preview only/);
+  assert.match(preview.stdout, /from 'vercel2daytona'/);
+  const applied = invoke('migrate', root, '--write');
+  assert.equal(applied.status, 0, applied.stderr);
+  assert.match(applied.stdout, /Updated app.ts/);
+  assert.ok(!applied.stdout.includes('const box ='));
+});

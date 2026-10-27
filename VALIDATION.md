@@ -4,8 +4,8 @@
 
 | Check | Result | Evidence |
 | --- | --- | --- |
-| TypeScript unit tests | 31 passed | `npm test` |
-| Python unit tests | 24 passed | `python -m unittest discover -s packages/py-sdk/tests` |
+| TypeScript unit tests | 34 passed | `npm test` |
+| Python unit tests | 26 passed | `python -m unittest discover -s packages/py-sdk/tests` |
 | TypeScript migration | Vercel and Daytona results match; both sandboxes deleted | [Receipt](verification/migration-2026-10-27.json) |
 | Python async and sync migrations | Results match; all four sandboxes deleted | [Receipt](verification/python-migration-2026-10-27.json) |
 | Daytona TTL | Native expiry and explicit deletion passed | [Receipt](verification/live-2026-10-27.json) |
@@ -30,7 +30,14 @@ python -m unittest discover -s packages/py-sdk/tests
 python -m build --no-isolation --wheel packages/py-sdk
 ```
 
-CI builds and installs the Python wheel, then runs its tests. Cloud tests are opt-in.
+CI builds and installs the Python wheel, then runs its tests. Tests also lint the
+skill's examples and verify diagnostic links; packaging checks typecheck the
+TypeScript example. Cloud tests are opt-in.
+
+The skill passed format validation and an isolated agent trial: a disposable
+TypeScript report was migrated with six passing offline integration tests and
+an unchanged frontend. A persistent Python workspace was correctly flagged for
+native migration and left unchanged. This trial made no cloud calls.
 
 ## Live migration tests
 

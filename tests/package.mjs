@@ -15,6 +15,10 @@ const npm = (args, cwd) => execFileSync('npm', args, {
 const [packed] = JSON.parse(npm(['pack', '--ignore-scripts', '--json', '--pack-destination', temporary], root));
 assert.ok(packed.files.some(file => file.path === 'dist/cli.js'));
 assert.ok(packed.files.some(file => file.path === '.env.example'));
+assert.ok(packed.files.some(file => file.path === 'skills/vercel2daytona/SKILL.md'));
+assert.ok(packed.files.some(file => file.path === 'skills/vercel2daytona/references/migration.md'));
+assert.ok(packed.files.some(file => file.path === 'examples/job.py'));
+assert.ok(packed.files.every(file => !/\b__pycache__\b|\.pyc$/.test(file.path)));
 assert.ok(packed.files.every(file => !file.path.startsWith('node_modules/') && file.path !== '.env'));
 await writeFile(join(consumer, 'package.json'), JSON.stringify({ name: 'package-consumer', private: true, type: 'module' }));
 npm(['install', '--ignore-scripts', '--no-audit', '--no-fund', '--git=/usr/bin/false', join(temporary, packed.filename)], consumer);
@@ -31,4 +35,10 @@ assert.equal(await readFile(join(consumer, 'app.mjs.vercel2daytona.bak'), 'utf8'
 execFileSync(process.execPath, ['--input-type=module', '-e', 'import { Sandbox, createSandboxClass } from "vercel2daytona"; if (typeof Sandbox.create !== "function" || typeof createSandboxClass !== "function") throw new Error("missing exports");'], { cwd: consumer, stdio: 'pipe' });
 await writeFile(join(consumer, 'types.mts'), (await readFile(join(root, 'tests/types.mts'), 'utf8')).replace('../dist/adapter.js', 'vercel2daytona'));
 execFileSync(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '--noEmit', '--strict', '--skipLibCheck', '--target', 'ES2022', '--module', 'NodeNext', '--lib', 'ES2023,DOM,ESNext.Disposable', 'types.mts'], { cwd: consumer, stdio: 'pipe' });
-console.log('PASS packed installation, executable, migration preview/apply, ESM exports and consumer types');
+const guide = await readFile(join(consumer, 'node_modules/vercel2daytona/skills/vercel2daytona/references/typescript.md'), 'utf8');
+for (const [index, match] of [...guide.matchAll(/```ts\n([\s\S]*?)```/g)].entries()) {
+  const file = `skill-example-${index}.mts`;
+  await writeFile(join(consumer, file), match[1]);
+  execFileSync(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '--noEmit', '--strict', '--skipLibCheck', '--target', 'ES2022', '--module', 'NodeNext', '--lib', 'ES2023,DOM,ESNext.Disposable', file], { cwd: consumer, stdio: 'pipe' });
+}
+console.log('PASS packed installation, executable, migration preview/apply, ESM exports, consumer types and skill example');

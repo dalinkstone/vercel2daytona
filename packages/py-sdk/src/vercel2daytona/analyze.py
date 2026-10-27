@@ -21,6 +21,20 @@ MEMBERS = {
     "result": {"args", "returncode", "stdout", "stderr", "check_returncode"},
 }
 METHODS = {"create_sandbox", "run_process", "stop", "destroy", "check_returncode", *FILE_OPTIONS}
+HELP_SECTIONS = {
+    "V2D_CONFIG": "configuration", "V2D_PERSISTENCE": "lifecycle", "V2D_TTL": "deadlines",
+    "V2D_OUTPUT": "command-output", "V2D_OPTIONS": "unsupported-options",
+}
+
+
+def help_url(code):
+    return "https://github.com/dalinkstone/vercel2daytona/blob/main/skills/vercel2daytona/references/migration.md#" + HELP_SECTIONS.get(code, "manual-migration")
+
+
+def option_message(option):
+    if option == "env":
+        return "Per-command env is unsupported. Move values to create_sandbox(env=...) only if they should apply to every command; otherwise use native Daytona execution"
+    return f"{option or '**options'} needs manual migration; preserve its behavior rather than dropping it"
 
 
 def constant(node):
@@ -44,7 +58,7 @@ class Analyzer(ast.NodeVisitor):
         self.parents = {child: parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
 
     def report(self, node, code, message, severity="error"):
-        self.diagnostics.append({"line": node.lineno, "column": node.col_offset + 1, "severity": severity, "code": code, "message": message})
+        self.diagnostics.append({"line": node.lineno, "column": node.col_offset + 1, "severity": severity, "code": code, "message": message, "helpUrl": help_url(code)})
 
     def kind(self, node):
         if isinstance(node, ast.Await):
@@ -181,7 +195,7 @@ class Analyzer(ast.NodeVisitor):
                 self.report(node, "V2D_OPTIONS", "create_sandbox accepts keyword arguments only")
             options = {k.arg: k.value for k in node.keywords}
             if constant(options.get("persistent")) is not False:
-                self.report(node, "V2D_PERSISTENCE", "Set persistent=False")
+                self.report(node, "V2D_PERSISTENCE", "Use persistent=False only for an intentionally disposable job; retained state needs a native Daytona lifecycle migration")
             if "destroy" in options and constant(options["destroy"]) is not True:
                 self.report(node, "V2D_PERSISTENCE", "destroy=False is unsupported")
             if "execution_time_limit" in options:
@@ -193,7 +207,7 @@ class Analyzer(ast.NodeVisitor):
             allowed = RUN
             options = {k.arg: k.value for k in node.keywords}
             if constant(options.get("capture_output")) is not True:
-                self.report(node, "V2D_OUTPUT", "Set capture_output=True; live output is unsupported")
+                self.report(node, "V2D_OUTPUT", "Set capture_output=True if buffered output is acceptable; live output needs native Daytona streaming")
             if len(node.args) > 2:
                 self.report(node, "V2D_OPTIONS", "Only command and args can be positional")
         elif kind == "fs" and method in FILE_OPTIONS:
@@ -211,7 +225,7 @@ class Analyzer(ast.NodeVisitor):
                 self.report(node, "V2D_OPTIONS", "Expanded positional arguments require manual review")
             for keyword in node.keywords:
                 if keyword.arg not in allowed:
-                    self.report(keyword, "V2D_OPTIONS", f"{keyword.arg or '**options'} needs manual migration")
+                    self.report(keyword, "V2D_OPTIONS", option_message(keyword.arg))
         for arg in (*node.args, *(k.value for k in node.keywords)):
             if self.kind(arg):
                 self.report(arg, "V2D_FLOW", "Provider handle passed to another function; review its consumers")
@@ -255,7 +269,7 @@ def analyze(source):
     try:
         tree = ast.parse(source)
     except SyntaxError as error:
-        return {"imports": 0, "edits": [], "diagnostics": [{"line": error.lineno or 1, "column": error.offset or 1, "severity": "error", "code": "V2D_SYNTAX", "message": error.msg}]}
+        return {"imports": 0, "edits": [], "diagnostics": [{"line": error.lineno or 1, "column": error.offset or 1, "severity": "error", "code": "V2D_SYNTAX", "message": error.msg, "helpUrl": help_url("V2D_SYNTAX")}]}
     visitor = Analyzer(source, tree)
     visitor.visit(tree)
     return {"imports": visitor.imports, "edits": visitor.edits, "diagnostics": visitor.diagnostics}

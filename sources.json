@@ -17,6 +17,13 @@
     "source": { "package": "vercel", "version": "0.12.1", "sandboxPackage": "vercel-sandbox", "sandboxVersion": "0.10.0" },
     "target": { "package": "daytona", "version": "0.226.1" }
   },
+  "agentDocumentation": {
+    "checkedAt": "2026-10-27",
+    "index": "https://www.daytona.io/docs/llms.txt",
+    "fullText": "https://www.daytona.io/docs/llms-full.txt",
+    "pageFormat": "Replace the trailing page slash with .md; prefer links from llms.txt",
+    "copyOptions": "Copy for LLM supplies page content; Copy prompt supplies task instructions where available"
+  },
   "documentation": [
     "https://vercel.com/docs/sandbox/sdk-reference",
     "https://vercel.com/docs/sandbox/concepts/persistent-sandboxes",

@@ -37,7 +37,6 @@ Remove Vercel's `token`, `teamId`, and `projectId` from sandbox creation options
 ## Migrate
 
 ```sh
-npx --no-install vercel2daytona lint .
 npx --no-install vercel2daytona migrate .
 npx --no-install vercel2daytona migrate . --write
 ```
@@ -45,6 +44,8 @@ npx --no-install vercel2daytona migrate . --write
 The CLI rewrites imports and preserves the installed adapter dependency.
 When run directly from this checkout, it adds a local `file:` dependency if needed.
 Review the changes and update your application's lockfile before deploying.
+Use `npx --no-install vercel2daytona lint . --json` for CI or agent diagnostics, including links to
+[migration fixes](../skills/vercel2daytona/references/migration.md).
 
 ## Run
 

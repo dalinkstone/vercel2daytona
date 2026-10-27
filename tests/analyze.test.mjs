@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
+import { readFileSync } from 'node:fs';
 import { analyze } from '../dist/analyze.js';
 
 const run = code => analyze({ '/app/index.ts': code });
@@ -81,4 +82,38 @@ const box = await Sandbox.get({});
 const wrapper = { box: box };
 `);
   for (const code of ['V2D_CLIENT_RUNTIME', 'V2D_EXPORT', 'V2D_FLOW', 'V2D_IDENTITY']) assert.ok(errors(result).some(d => d.code === code), code);
+});
+
+test('findings link to existing recipes and explain credentials, env and retained state', () => {
+  const result = run(prefix + `const box = await Box.create({ token: process.env.VERCEL_TOKEN });
+await box.runCommand({ cmd: 'node', env: { MODE: 'report' } });
+await box.snapshot();`);
+  const guide = readFileSync('skills/vercel2daytona/references/migration.md', 'utf8');
+  const headings = [...guide.matchAll(/^## (.+)$/gm)].map(m => m[1].toLowerCase().replaceAll(' ', '-'));
+  for (const finding of result.diagnostics) {
+    const url = new URL(finding.helpUrl);
+    assert.equal(url.hostname, 'github.com');
+    assert.ok(headings.includes(url.hash.slice(1)), finding.helpUrl);
+  }
+  assert.ok(result.diagnostics.some(d => d.message.includes('DAYTONA_API_KEY') && d.message.includes('token')));
+  assert.ok(result.diagnostics.some(d => d.message.includes('every command')));
+  assert.ok(result.diagnostics.some(d => d.code === 'V2D_PERSISTENCE' && d.message.includes('Retained state')));
+});
+
+test('documented TypeScript programs and reviewed replacements pass lint', () => {
+  let checked = 0;
+  for (const file of ['typescript', 'migration']) {
+    const guide = readFileSync(`skills/vercel2daytona/references/${file}.md`, 'utf8');
+    for (const [, language, body] of guide.matchAll(/```(ts|diff)\n([\s\S]*?)```/g)) {
+      let code = body;
+      if (language === 'diff') {
+        if (!/const box|import \{ Sandbox \}/.test(body)) continue;
+        code = body.split('\n').filter(line => !line.startsWith('-')).map(line => line.startsWith('+') ? line.slice(1) : line).join('\n');
+      }
+      if (!code.includes('import { Sandbox }')) code = "import { Sandbox } from 'vercel2daytona';\n" + code;
+      assert.deepEqual(errors(run(code)), [], `${file}: ${code}`);
+      checked++;
+    }
+  }
+  assert.ok(checked >= 4);
 });

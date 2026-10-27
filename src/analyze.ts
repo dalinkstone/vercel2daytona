@@ -8,11 +8,24 @@ export interface Diagnostic {
   severity: 'error' | 'warning';
   code: string;
   message: string;
+  helpUrl: string;
 }
 export interface Edit { file: string; start: number; end: number; replacement: string }
 export interface Analysis { diagnostics: Diagnostic[]; edits: Edit[]; imports: number }
 type Kind = 'class' | 'namespace' | 'sandbox' | 'command';
 const modules = new Set(['@vercel/sandbox', 'vercel2daytona']);
+const helpSections: Record<string, string> = {
+  V2D_CONFIG: 'configuration', V2D_IMAGE: 'configuration',
+  V2D_PERSISTENCE: 'lifecycle', V2D_STOP_RESULT: 'lifecycle', V2D_TTL: 'lifecycle',
+  V2D_TIMEOUT: 'deadlines', V2D_OPTION: 'unsupported-options', V2D_PREVIEW: 'preview-access',
+};
+const helpUrl = (code: string) => `https://github.com/dalinkstone/vercel2daytona/blob/main/skills/vercel2daytona/references/migration.md#${helpSections[code] ?? 'manual-migration'}`;
+
+function optionMessage(key: string): string {
+  if (['token', 'teamId', 'projectId'].includes(key)) return `${key} is a Vercel credential; remove it from creation options and configure DAYTONA_API_KEY in the backend environment.`;
+  if (key === 'env') return 'Per-command env is unsupported. Move values to create({ env }) only if they should apply to every command; otherwise use native Daytona execution.';
+  return `${key} has no supported adapter mapping. Preserve its behavior with native Daytona code; do not just remove the option.`;
+}
 
 /** Conservative source analysis, never imports or executes the application. */
 export function analyze(files: Record<string, string>): Analysis {
@@ -32,7 +45,7 @@ export function analyze(files: Record<string, string>): Analysis {
   const report = (node: ts.Node, code: string, message: string, severity: Diagnostic['severity'] = 'error') => {
     const sf = node.getSourceFile();
     const pos = sf.getLineAndCharacterOfPosition(node.getStart(sf));
-    diagnostics.push({ file: sf.fileName, line: pos.line + 1, column: pos.character + 1, severity, code, message });
+    diagnostics.push({ file: sf.fileName, line: pos.line + 1, column: pos.character + 1, severity, code, message, helpUrl: helpUrl(code) });
   };
   const unwrap = (node: ts.Expression): ts.Expression => {
     while (ts.isAwaitExpression(node) || ts.isParenthesizedExpression(node) || ts.isAsExpression(node) || ts.isNonNullExpression(node) || ts.isSatisfiesExpression(node)) node = node.expression;
@@ -77,7 +90,7 @@ export function analyze(files: Record<string, string>): Analysis {
         continue;
       }
       const key = property.name.text;
-      if (!allowed.includes(key)) report(property, 'V2D_OPTION', `${key} has no supported adapter mapping; see COMPATIBILITY.md.`);
+      if (!allowed.includes(key)) report(property, 'V2D_OPTION', optionMessage(key));
       if (ts.isPropertyAssignment(property)) result.set(key, resolve(property.initializer));
       else if (ts.isShorthandPropertyAssignment(property)) {
         const sym = checker.getShorthandAssignmentValueSymbol(property);
@@ -91,7 +104,7 @@ export function analyze(files: Record<string, string>): Analysis {
   for (const sf of sources) {
     for (const error of program.getSyntacticDiagnostics(sf)) {
       const pos = sf.getLineAndCharacterOfPosition(error.start ?? 0);
-      diagnostics.push({ file: sf.fileName, line: pos.line + 1, column: pos.character + 1, severity: 'error', code: 'V2D_SYNTAX', message: ts.flattenDiagnosticMessageText(error.messageText, '\n') });
+      diagnostics.push({ file: sf.fileName, line: pos.line + 1, column: pos.character + 1, severity: 'error', code: 'V2D_SYNTAX', message: ts.flattenDiagnosticMessageText(error.messageText, '\n'), helpUrl: helpUrl('V2D_SYNTAX') });
     }
     visit(sf, node => {
       if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier) && modules.has(node.moduleSpecifier.text)) {
@@ -163,7 +176,7 @@ export function analyze(files: Record<string, string>): Analysis {
     if (!ts.isCallExpression(call) || call.expression !== node) { report(node, 'V2D_FLOW', 'Extracted provider methods require manual review.'); return; }
     if (kind === 'class' && name === 'create') {
       const options = fields(call.arguments[0], call, CREATE_KEYS);
-      if (options.get('persistent')?.kind !== ts.SyntaxKind.FalseKeyword) report(call, 'V2D_PERSISTENCE', 'Explicit persistent: false is required. Current Vercel defaults to persistent snapshots and auto-resume.');
+      if (options.get('persistent')?.kind !== ts.SyntaxKind.FalseKeyword) report(call, 'V2D_PERSISTENCE', 'Use persistent: false only for an intentionally disposable job. Retained state or auto-resume requires a native Daytona lifecycle migration.');
       for (const key of ['runtime', 'image']) if (options.has(key)) report(options.get(key)!, 'V2D_IMAGE', 'Provider image/runtime names need an explicit createSandboxClass({ images }) mapping; the default import cannot translate them.');
       if (options.has('ports')) report(options.get('ports')!, 'V2D_PREVIEW', 'Review public access and set publicPreview explicitly. Daytona public previews are sandbox-wide, not a port allowlist.', 'warning');
       const policy = options.get('networkPolicy');

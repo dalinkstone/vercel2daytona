@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vercel to Daytona"
+  short_description: "Migrate Vercel Sandbox code to Daytona"
+  default_prompt: "Use $vercel2daytona to migrate this project’s Vercel Sandbox code to Daytona while preserving its behavior."

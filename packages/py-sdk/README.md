@@ -27,13 +27,14 @@ The image must contain your runtime and the working directory. Set
 ## Migrate
 
 ```sh
-python -m vercel2daytona lint /path/to/app
 python -m vercel2daytona migrate /path/to/app
 python -m vercel2daytona migrate /path/to/app --write
 ```
 
 The CLI rewrites supported imports and creates `.vercel2daytona.bak` backups.
 Errors block all writes. Dependency files stay unchanged.
+Use `python -m vercel2daytona lint /path/to/app --json` for CI or agent diagnostics.
+See [migration fixes](../../skills/vercel2daytona/references/migration.md) for examples.
 
 ```diff
 -from vercel import sandbox

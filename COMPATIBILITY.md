@@ -44,7 +44,9 @@ raise an error; they aren't silently ignored.
 
 Both CLIs inspect source without executing it. Preview is the default; `--write`
 creates exclusive `.vercel2daytona.bak` backups. Errors block all writes.
-`--json` emits a report; `--strict` also fails on review warnings.
+`--json` emits a report with a `helpUrl` for each diagnostic; `--strict` also fails
+on review warnings. `migrate` runs the same checks as `lint`, so a separate lint
+pass is optional. See [migration fixes](skills/vercel2daytona/references/migration.md).
 
 Exit codes: **0** passed, **1** diagnostics, **2** tool error. Hidden paths,
 dependencies, build output, and symlinks are skipped. Dynamic imports, opaque

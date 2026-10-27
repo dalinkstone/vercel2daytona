@@ -89,11 +89,15 @@ def main(argv=None):
         else:
             for d in diagnostics:
                 print(f'{d["file"]}:{d["line"]}:{d["column"]} {d["severity"]} {d["code"]} {d["message"]}')
+            if diagnostics:
+                print(f'\nMigration examples: {diagnostics[0]["helpUrl"].split("#")[0]}')
             for path, before, after in changes:
                 print(f'{"Updated" if args.write else "Would update"} {path.relative_to(root)}')
             if not args.write and patches:
                 print(report["diff"])
             print(f'{files} Python files; {imports} SDK imports; {"blocked" if blocked else str(len(changes)) + " changes"}')
+            if changes and not args.write:
+                print('Preview only. Apply with migrate --write after reviewing the findings.')
         return 1 if blocked else 0
     except (OSError, ValueError, UnicodeError, SyntaxError) as error:
         print(f"vercel2daytona: {error}", file=sys.stderr)

@@ -11,7 +11,7 @@ const help = `vercel2daytona lint [directory] [--json] [--strict]
 vercel2daytona migrate [directory] [--write] [--json]
 
 lint: inspect JS/TS source without executing it. Exit 1 for errors, 2 for tool errors.
-migrate: preview import and package.json edits; --write applies only when no errors exist.
+migrate: check compatibility and preview edits; --write applies only when no errors exist.
 Generated directories, hidden entries and symlinks are skipped. Lockfiles are never edited.
 `;
 
@@ -126,12 +126,14 @@ export async function main(args = process.argv.slice(2)): Promise<number> {
   if (flags.has('--json')) console.log(JSON.stringify(report, null, 2));
   else {
     for (const d of report.diagnostics) console.log(`${d.file}:${d.line}:${d.column} ${d.severity} ${d.code} ${d.message}`);
+    if (report.diagnostics.length) console.log(`\nMigration examples: ${report.diagnostics[0]!.helpUrl.split('#')[0]}`);
     for (const change of report.changes) {
       console.log(`\n${report.applied ? 'Updated' : 'Would update'} ${change.file}`);
-      console.log(change.after);
+      if (!report.applied) console.log(change.after);
     }
     console.log(`\n${report.files} source files; ${report.imports} SDK imports; ${blocked ? 'blocked by diagnostics' : `${changes.length} proposed file changes`}.`);
-    if (changes.length) console.log('Build/install the local package and update the application lockfile with lifecycle scripts disabled. Review backups, image configuration and compatibility notes before running cloud workloads.');
+    if (report.applied) console.log('Review changes and update the application lockfile before running its tests.');
+    else if (changes.length) console.log('Preview only. Apply with migrate --write after reviewing the findings.');
     if (!analysis.imports) console.log('No supported static SDK imports found. This is not a compatibility guarantee.');
   }
   return blocked ? 1 : 0;

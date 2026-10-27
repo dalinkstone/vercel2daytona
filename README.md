@@ -14,12 +14,12 @@ Install from source; the packages aren't published to npm or PyPI.
 
 ## Migrate
 
-Install the adapter, configure Daytona, then check and migrate your application:
+Install the adapter, configure Daytona, then preview and apply the migration:
 
 **TypeScript**
 
 ```sh
-npx --no-install vercel2daytona lint .
+npx --no-install vercel2daytona migrate .
 npx --no-install vercel2daytona migrate . --write
 ```
 
@@ -31,7 +31,7 @@ npx --no-install vercel2daytona migrate . --write
 **Python**
 
 ```sh
-python -m vercel2daytona lint .
+python -m vercel2daytona migrate .
 python -m vercel2daytona migrate . --write
 ```
 
@@ -40,9 +40,20 @@ python -m vercel2daytona migrate . --write
 +from vercel2daytona import sandbox
 ```
 
-Omit `--write` to preview. Errors block migration; applied changes get backups.
+Preview includes compatibility checks. Errors block writes; changes get backups.
 Use explicitly disposable sandboxes: `persistent: false` in TypeScript or
 `persistent=False` in Python. Credentials and images require configuration.
+
+## Agent skill
+
+Copy [skills/vercel2daytona](skills/vercel2daytona) into your agent's skills
+directory (Codex: `~/.codex/skills/`), then ask:
+
+> Use $vercel2daytona to migrate this project's Vercel Sandbox code to Daytona.
+> Preserve its behavior and verify the changes.
+
+The skill uses Daytona's LLM docs and includes
+[migration fixes](skills/vercel2daytona/references/migration.md) with before/after examples.
 
 ## Compatibility
 
@@ -57,6 +68,7 @@ See the [compatibility table](COMPATIBILITY.md) for the supported APIs and limit
 | Example | TypeScript | Python |
 | --- | --- | --- |
 | Run a command | [Job](examples/job.mjs) | [Job](examples/job.py) |
+| Migration walkthrough | [Files + commands](skills/vercel2daytona/references/typescript.md) | [Async + sync](skills/vercel2daytona/references/python.md) |
 | Before-and-after migration | [Report + HTTP server](tests/fixtures/migration/app.mjs) | [Async report](packages/py-sdk/tests/fixtures/async_app.py) · [Sync report](packages/py-sdk/tests/fixtures/sync_app.py) |
 
 Live migration tests passed on both providers. [Test results and commands](VALIDATION.md).
