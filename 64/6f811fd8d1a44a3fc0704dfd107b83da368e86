@@ -1,0 +1,19 @@
+.github/workflows/ci.yml
+  s_db2946d765cbdd::t_8df56356fdc908 43-45,47-49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "646f811fd8d1a44a3fc0704dfd107b83da368e86",
+  "prompts": {},
+  "sessions": {
+    "s_db2946d765cbdd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17a2f-271c-7511-bfcd-25a401506a6e",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Dalin Stone <dalinkstone@gmail.com>"
+    }
+  }
+}
