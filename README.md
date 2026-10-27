@@ -10,9 +10,10 @@ Source is shared in this repository; the package is not published to npm. Build
 from source or install a tarball as below. The manifest retains `private: true`
 to prevent accidental npm publication.
 
-The adapter has passed live Daytona checks for explicitly disposable Node backend
-workflows, including actual native expiry and cleanup. See [VALIDATION.md](./VALIDATION.md)
-for the tested scope and [recorded results](./verification/live-2026-10-27.json). Read
+The adapter has passed a live **Vercel → CLI migration → Daytona** application test,
+with identical report files, command results and HTTP responses. Separate Daytona
+checks cover native expiry and cleanup. See [VALIDATION.md](./VALIDATION.md)
+for the tested scope and [migration results](./verification/migration-2026-10-27.json). Read
 [COMPATIBILITY.md](./COMPATIBILITY.md) before switching a workload. A successful
 lint is a static check, not proof of cloud parity. Persistent sandboxes and more
 advanced Vercel capabilities need application-specific native Daytona changes.
@@ -167,3 +168,37 @@ The smaller [job example](./examples/job.mjs) is independently gated with the sa
 environment flag. CI runs offline and packaging checks on Node 22 and 24 without
 cloud credentials. Before production cutover, also run your application's unchanged
 acceptance tests against both providers and review preview auth and resource behavior.
+
+## End-to-end migration test
+
+The [sales-report program](./tests/fixtures/migration/app.mjs) uploads orders and a
+[Node worker](./tests/fixtures/migration/worker.mjs), builds a report, and serves it
+over HTTP. The [test runner](./tests/migration-live.mjs) first runs it with the real
+`@vercel/sandbox@3.9.0`, then applies the installed migration CLI and runs it on
+Daytona. It compares the same application assertions and report checksum, and
+confirms both sandboxes are deleted through their native APIs.
+
+From a built source checkout, place `VERCEL_TOKEN`, `VERCEL_TEAM_ID`,
+`VERCEL_PROJECT_ID` and `DAYTONA_API_KEY` in the ignored `.env.local` file. The Vercel
+token must have access to that project's team. Daytona also supports a JWT plus
+`DAYTONA_ORGANIZATION_ID` in place of an API key. Then run:
+
+```sh
+DAYTONA_RUN_LIVE=1 DAYTONA_PUBLIC_PREVIEW=1 \
+DAYTONA_IMAGE=node:22-bookworm DAYTONA_WORKDIR=/home/node DAYTONA_USER=node \
+node --env-file=.env.local tests/migration-live.mjs
+```
+
+This installs the pinned Vercel SDK and the packed adapter into a temporary
+consumer with lifecycle scripts disabled. It creates one disposable sandbox per
+provider, each with a five-minute lifetime, and exposes a public endpoint serving
+synthetic test data. The test fails if application behavior differs or deletion
+cannot be confirmed. The printed receipt path contains a sanitized JSON result.
+
+Authentication and image settings still require review: the test first verifies
+that the linter blocks Vercel's `token`, `teamId` and `projectId` fields. It then
+explicitly removes those three fields and configures Daytona through environment
+variables. The CLI changes the import; it does not translate credentials. The
+program discovers its actual guest working directory and uses absolute paths,
+because image defaults differ. The adapter implementation required no changes
+for this test. Cloud tests are opt-in and do not run in CI.

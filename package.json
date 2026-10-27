@@ -17,7 +17,8 @@
     "test:types": "tsc --noEmit --strict --skipLibCheck --target ES2022 --module NodeNext --lib ES2023,DOM,ESNext.Disposable tests/types.mts",
     "test": "node --import ./tests/no-network.mjs --test tests/*.test.mjs",
     "test:package": "node tests/package.mjs",
-    "test:live": "node tests/live.mjs"
+    "test:live": "node tests/live.mjs",
+    "test:migration": "node tests/migration-live.mjs"
   },
   "dependencies": { "@daytona/sdk": "0.226.1", "typescript": "5.9.3" },
   "devDependencies": { "@types/node": "22.15.12" }

@@ -1,0 +1,103 @@
+{
+  "checkedAt": "2026-10-27T02:54:13.540Z",
+  "sourceSdk": "@vercel/sandbox@3.9.0",
+  "targetSdk": "@daytona/sdk@0.226.1",
+  "target": {
+    "image": "node:22-bookworm",
+    "workdir": "/home/node",
+    "user": "node"
+  },
+  "passed": [
+    "Vercel program",
+    "credential-field lint blockers",
+    "migration preview/apply and backup",
+    "Daytona program",
+    "identical program results",
+    "both sandboxes confirmed deleted"
+  ],
+  "sourceSha256": "fee80023d0a9f48b2358bf41c1d91c8823f4f8bed9ad07a8ee2f30645935e296",
+  "migratedSha256": "7ee070cc387f1ad21d4115b3968720c4250cf21b332352be6854e635907a207e",
+  "manualChanges": [
+    "Removed token, teamId and projectId from Sandbox.create",
+    "Configured Daytona credentials, image, workdir, guest user and public preview in the environment"
+  ],
+  "automaticChanges": [
+    "Changed the SDK import from @vercel/sandbox to vercel2daytona; the packed adapter dependency was already installed"
+  ],
+  "reviewedWarnings": [
+    "V2D_CONFIG",
+    "V2D_TTL",
+    "V2D_PREVIEW"
+  ],
+  "environments": {
+    "vercel": {
+      "workdir": "/vercel",
+      "node": "v24.22.1"
+    },
+    "daytona": {
+      "workdir": "/home/node",
+      "node": "v22.23.4"
+    }
+  },
+  "resultsMatch": true,
+  "cleanupConfirmed": {
+    "vercel": true,
+    "daytona": true
+  },
+  "result": {
+    "report": {
+      "label": "migration-demo",
+      "orders": 3,
+      "revenueCents": 4650,
+      "items": [
+        {
+          "sku": "book",
+          "units": 3,
+          "revenueCents": 3900
+        },
+        {
+          "sku": "pen",
+          "units": 3,
+          "revenueCents": 750
+        }
+      ]
+    },
+    "stdout": "{\"label\":\"migration-demo\",\"orders\":3,\"revenueCents\":4650,\"items\":[{\"sku\":\"book\",\"units\":3,\"revenueCents\":3900},{\"sku\":\"pen\",\"units\":3,\"revenueCents\":750}]}\n",
+    "stderr": "report-built\n",
+    "rejectedExitCode": 7,
+    "rejectedStderr": "expected build or serve\n",
+    "binaryHex": "00017f80ff",
+    "fileMode": "640",
+    "literalOutput": {
+      "args": [
+        "two words",
+        "apostrophe'",
+        "$(printf injected)",
+        "; printf injected",
+        "*",
+        ""
+      ],
+      "stdin": ""
+    },
+    "reportSha256": "8bd912d16c185e51939eedc8dcdf03bc4d62016b311ecba541de1e3ee795f013",
+    "httpStatus": 200,
+    "httpReport": {
+      "label": "migration-demo",
+      "orders": 3,
+      "revenueCents": 4650,
+      "items": [
+        {
+          "sku": "book",
+          "units": 3,
+          "revenueCents": 3900
+        },
+        {
+          "sku": "pen",
+          "units": 3,
+          "revenueCents": 750
+        }
+      ]
+    },
+    "missingStatus": 404
+  }
+}
