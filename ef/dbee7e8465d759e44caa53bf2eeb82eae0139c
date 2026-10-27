@@ -1,0 +1,66 @@
+packages/py-sdk/README.md
+  s_db2946d765cbdd::t_5d7310febfd341 36-37
+src/analyze.ts
+  s_db2946d765cbdd::t_095526038b7e83 25
+  s_db2946d765cbdd::t_5d7310febfd341 11,17-24,26-28,48,93,107,179
+tests/package.mjs
+  s_db2946d765cbdd::t_3d2a078c83cffe 18-19,38-44
+  s_db2946d765cbdd::t_d1a0301ea1275f 20-21
+packages/py-sdk/src/vercel2daytona/analyze.py
+  s_db2946d765cbdd::t_5d7310febfd341 24-37,61,198,210,228,272
+skills/vercel2daytona/references/daytona-docs.md
+  s_db2946d765cbdd::t_b548c54ef1f9c2 1-45
+docs/typescript.md
+  s_db2946d765cbdd::t_5d7310febfd341 48
+  s_db2946d765cbdd::t_9d8091218b0dad 47
+COMPATIBILITY.md
+  s_db2946d765cbdd::t_5d7310febfd341 47-49
+packages/py-sdk/tests/test_cli.py
+  s_db2946d765cbdd::t_095526038b7e83 99-100
+  s_db2946d765cbdd::t_3d2a078c83cffe 5,7,10,77-98,101-105
+  s_db2946d765cbdd::t_c11f350504d55e 106
+packages/py-sdk/src/vercel2daytona/cli.py
+  s_db2946d765cbdd::t_5d7310febfd341 92-93,99-100
+tests/analyze.test.mjs
+  s_db2946d765cbdd::t_3d2a078c83cffe 3,86-119
+skills/vercel2daytona/SKILL.md
+  s_db2946d765cbdd::t_b548c54ef1f9c2 1-70
+VALIDATION.md
+  s_db2946d765cbdd::t_dc4b48c505b778 7-8,33-35
+  s_db2946d765cbdd::t_3578c02d9cdac2 37-40
+  s_db2946d765cbdd::t_aa3e3430733aa2 36
+README.md
+  s_db2946d765cbdd::t_5d7310febfd341 17,22,34,43,47-57,71
+skills/vercel2daytona/references/typescript.md
+  s_db2946d765cbdd::t_b548c54ef1f9c2 1-70
+tests/cli.test.mjs
+  s_db2946d765cbdd::t_3d2a078c83cffe 123-135
+skills/vercel2daytona/references/migration.md
+  s_db2946d765cbdd::t_b548c54ef1f9c2 1-106
+sources.json
+  s_db2946d765cbdd::t_dc4b48c505b778 20-26
+skills/vercel2daytona/references/python.md
+  s_db2946d765cbdd::t_b548c54ef1f9c2 1-82
+src/cli.ts
+  s_db2946d765cbdd::t_5d7310febfd341 14,129,132,135-136
+package.json
+  s_db2946d765cbdd::t_d1a0301ea1275f 13
+skills/vercel2daytona/agents/openai.yaml
+  s_db2946d765cbdd::t_1532f2977911da 1-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "efdbee7e8465d759e44caa53bf2eeb82eae0139c",
+  "prompts": {},
+  "sessions": {
+    "s_db2946d765cbdd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a17a2f-271c-7511-bfcd-25a401506a6e",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Dalin Stone <dalinkstone@gmail.com>"
+    }
+  }
+}
